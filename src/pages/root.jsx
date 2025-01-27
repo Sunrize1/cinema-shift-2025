@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getPokemonsIsLoading, getPokemonsList } from '../utils/redux/pokemons/seletor';
+import { getPokemonsIsLoading, getPokemonsList } from '../utils/redux/pokemons/seleсtor';
 import { fetchPokemons } from '../utils/redux/pokemons/thunks';
 
 export const RootPage = () => {
