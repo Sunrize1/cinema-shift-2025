@@ -2,7 +2,7 @@ import React from "react";
 
 export const Header = () => {
   return (
-    <header className="py-4 px-6 flex justify-between items-center max-w-screen-lg mx-auto">
+    <header className="py-4 flex justify-between items-center max-w-screen-lg mx-auto">
       
         <div className="left-side-header items-center flex gap-6">
           <div className="logo">

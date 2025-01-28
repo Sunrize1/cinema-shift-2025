@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 
-import { prefix as pokemonsPrefix, pokemonsReducer } from './pokemons/slice'
+import { prefix as filmsPrefix, filmsReducer } from './Films/slice'
 
 export const store = configureStore({
-  reducer: { [pokemonsPrefix]: pokemonsReducer },
+  reducer: { [filmsPrefix]: filmsReducer },
 })
