@@ -1,3 +1,4 @@
 export const ROUTES = {
-  ROOT: '/',
+  MAIN_ROOT: '/',
+  FILM_INFO: `/cinema/film/:filmId`,
 }
