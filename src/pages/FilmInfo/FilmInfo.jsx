@@ -4,6 +4,7 @@ import { useEffect} from "react";
 import { useParams } from "react-router-dom";
 
 import {fetchConcreateFilm} from "../../utils/redux/ConcreateFilm/thunks";
+import { Container } from "../../components/Other/Container";
 import { getConcreateFilmIsLoading, getConcreateFilm } from '../../utils/redux/ConcreateFilm/seleсtor'; 
 import { Header } from "../../components/Header/header";
 import { FilmCard } from "../../components/Main/filmCard";
@@ -23,11 +24,11 @@ export const FilmInfo = () => {
   if (isLoading) return <div className="max-w-screen-lg mx-auto">Загрузка...</div>;
 
   return (
-    <div className="max-w-screen-lg mx-auto flex flex-col gap-6">
+    <Container>
       <Header />
       <BackArrow />
       <FilmCard film={film} isDetailed={true} />
       <FilmSchedule filmId={filmId} />
-    </div>
+    </Container>
   );
 };

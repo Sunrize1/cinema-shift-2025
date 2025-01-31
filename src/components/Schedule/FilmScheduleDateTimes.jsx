@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { v4 as uuidv4 } from 'uuid'; 
+import { useNavigate, useParams } from "react-router-dom";
 
 import { FilmScheduleDateTimesCell } from "./FilmScheduleDateTimesCell";
+import {ROUTES} from "../../utils/constants/router";
 import {Button} from '../Other/Button';
 
 
-export const FilmScheduleDateTimes = ({ seances}) => {
+export const FilmScheduleDateTimes = ({ seances, date}) => {
+    const navigate = useNavigate();
+    const { filmId } = useParams(); 
     const [activeSeances, setActiveSeances] = useState([]);
     const [activeTime, setActiveTime] = useState({id: null});
 
@@ -26,6 +29,7 @@ export const FilmScheduleDateTimes = ({ seances}) => {
 
                 hallsMap[hallName].push({
                     id: id,
+                    date: date,
                     time: time,
                     hallName: hallName,
                     places: places,
@@ -59,7 +63,13 @@ export const FilmScheduleDateTimes = ({ seances}) => {
     const handleDateTimeClick = (time) => {
         setActiveTime(time);
     };
-    console.log(activeTime);
+
+    const handleButtonClick = () => {
+        navigate(ROUTES.TICKET_PAYMENT.replace(':filmId', filmId),
+            {state: { activeTime: activeTime}},
+        );
+    };
+    
 
     return (
         <div>
@@ -78,7 +88,7 @@ export const FilmScheduleDateTimes = ({ seances}) => {
                     </div>
                 </div>
             ))}
-            <Button isActive={activeTime.id}>Продолжить</Button>
+            <Button isActive={activeTime.id} onClick={handleButtonClick}>Продолжить</Button>
         </div>
     );
 };
