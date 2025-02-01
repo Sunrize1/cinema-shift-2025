@@ -31,7 +31,7 @@ export const FilmScheduleDate = ({ dates, index }) => {
                 />
             ))}
         </div>
-        <FilmScheduleDateTimes seances={activeDate.seances} />
+        <FilmScheduleDateTimes seances={activeDate.seances} date={activeDate.date} />
         </div> 
     );
 };
