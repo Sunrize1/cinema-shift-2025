@@ -21,7 +21,11 @@ export const FilmInfo = () => {
     dispatch(fetchConcreateFilm(filmId));
   }, [dispatch, filmId]); 
 
-  if (isLoading) return <div className="max-w-screen-lg mx-auto">Загрузка...</div>;
+  if (isLoading) return (
+  <Container>
+    <Header />
+    <div className="max-w-screen-lg mx-auto">Загрузка...</div>
+  </Container>);
 
   return (
     <Container>
