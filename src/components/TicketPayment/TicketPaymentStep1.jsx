@@ -15,15 +15,17 @@ export const TicketPaymentStep1 = ({ places, hallName, date, time, onSubmitTicke
 
     const ticketSelect = (row, col, ticketPrice) => {
         setSelectedTickets((prev) => {
-            const exists = prev.some(ticket => ticket.row === row && ticket.col === col);
-    
-            setSum((prevSum) => exists ? prevSum - ticketPrice : prevSum + ticketPrice);
-    
-            return exists 
-                ? prev.filter(ticket => ticket.row !== row || ticket.col !== col) 
-                : [...prev, { row, col }];
+          
+          const exists = prev.some(ticket => ticket.row === row && ticket.column === col);
+      
+          
+          setSum((prevSum) => exists ? prevSum - ticketPrice : prevSum + ticketPrice);
+      
+          return exists
+            ? prev.filter(ticket => ticket.row !== row || ticket.column !== col)
+            : [...prev, { row, column: col }]; 
         });
-    };
+      };
 
     const translateHallName = (hallName) => {
         switch (hallName) {
@@ -42,6 +44,8 @@ export const TicketPaymentStep1 = ({ places, hallName, date, time, onSubmitTicke
         navigate(-1);
     }
 
+    
+
     return (
         <div className="flex flex-col gap-5 w-md">
             <div className='flex flex-col gap-1 w-lg'>
@@ -53,7 +57,7 @@ export const TicketPaymentStep1 = ({ places, hallName, date, time, onSubmitTicke
                 <div key={rowIndex} className="flex flex-row justify-between">
                     <p>{rowIndex + 1}</p>
                     {place.map((col, colIndex) => {
-                        const isSelected = selectedTickets.some(ticket => ticket.row === rowIndex && ticket.col === colIndex);
+                        const isSelected = selectedTickets.some(ticket => ticket.row === rowIndex && ticket.column === colIndex);
                         return (
                             <TicketPlaceButton 
                                 key={colIndex}
@@ -70,17 +74,17 @@ export const TicketPaymentStep1 = ({ places, hallName, date, time, onSubmitTicke
             ))}
 
             <div>
-                <p className="text-gray-600">Зал</p>
+                <span className="text-gray-600">Зал</span>
                 <p className="text-lg">{translateHallName(hallName)}</p>
             </div>
             <div>
-                <p className="text-gray-600">Дата и время</p>
+                <span className="text-gray-600">Дата и время</span>
                 <p className="text-lg">{`${format(newDate, "d MMMM", { locale: ru })} ${time}`}</p>
             </div>
             <div>
-                <p className="text-gray-600">Места</p>
+                <span className="text-gray-600">Места</span>
                 {selectedTickets.map((ticket, index) => (
-                <p key={index} className="text-lg">{`${ticket.row + 1} ряд ${ticket.col + 1} место`}</p>
+                <p key={index} className="text-lg">{`${ticket.row + 1} ряд ${ticket.column + 1} место`}</p>
             ))}
             </div>
             <h2 className='text-2xl font-bold'>{`Сумма: ${sum} ₽`}</h2>

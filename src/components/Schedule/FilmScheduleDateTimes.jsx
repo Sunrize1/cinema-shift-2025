@@ -1,94 +1,62 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
+
+import { resetPaymentData } from "../../utils/redux/payForTickets copy/slice";
+import { setActiveTime } from '../../utils/redux/FilmSchedules/slice';
+import { getActiveSeances, getActiveTime } from '../../utils/redux/FilmSchedules/seleсtor';
 import { FilmScheduleDateTimesCell } from "./FilmScheduleDateTimesCell";
-import {ROUTES} from "../../utils/constants/router";
-import {Button} from '../Other/Button';
+import { ROUTES } from "../../utils/constants/router";
+import { Button } from '../Other/Button';
 
+export const FilmScheduleDateTimes = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const { filmId } = useParams();
+  const activeSeances = useSelector(getActiveSeances);
+  const activeTime = useSelector(getActiveTime);
 
-export const FilmScheduleDateTimes = ({ seances, date}) => {
-    const navigate = useNavigate();
-    const { filmId } = useParams(); 
-    const [activeSeances, setActiveSeances] = useState([]);
-    const [activeTime, setActiveTime] = useState({id: null});
+  const handleDateTimeClick = (time) => {
+    dispatch(resetPaymentData());
+    dispatch(setActiveTime(time));
+  };
 
-    useEffect(() => {
-        
-        if (seances && seances.length > 0) {
-            const hallsMap = {};
+  const handleButtonClick = () => {
+    navigate(ROUTES.TICKET_PAYMENT.replace(':filmId', filmId));
+  };
 
-            seances.forEach((item) => {
-                const id = item.id;
-                const hallName = item.hall.name;
-                const time = item.time;
-                const places = item.hall.places;
+  const translateHallName = (hallName) => {
+    switch (hallName) {
+        case "Red":
+            return "Красный зал";
+        case "Blue":
+            return "Синий зал";
+        case "Green":
+            return "Зеленый зал";
+        default:
+            return hallName;
+    }
+};
 
-                if (!hallsMap[hallName]) {
-                    hallsMap[hallName] = [];
-                }
-
-                hallsMap[hallName].push({
-                    id: id,
-                    date: date,
-                    time: time,
-                    hallName: hallName,
-                    places: places,
-                });
-            });
-
-            const hallsArray = Object.keys(hallsMap).map((hallName) => ({
-                hallName: hallName,
-                times: hallsMap[hallName],
-            }));
-
-            setActiveSeances(hallsArray);
-        } else {
-            setActiveSeances([]);
-        }
-    }, [seances]);
-
-    const translateHallName = (hallName) => {
-        switch (hallName) {
-            case "Red":
-                return "Красный зал";
-            case "Blue":
-                return "Синий зал";
-            case "Green":
-                return "Зеленый зал";
-            default:
-                return hallName;
-        }
-    };
-
-    const handleDateTimeClick = (time) => {
-        setActiveTime(time);
-    };
-
-    const handleButtonClick = () => {
-        navigate(ROUTES.TICKET_PAYMENT.replace(':filmId', filmId),
-            {state: { activeTime: activeTime}},
-        );
-    };
-    
-
-    return (
-        <div>
-            {activeSeances.map((hall) => (
-                <div className="flex flex-col gap-3" key={hall.hallName}>
-                    <h3 className="mx-1 text-gray-600">{translateHallName(hall.hallName)}</h3>
-                    <div className="flex flex-row gap-1">
-                        {hall.times.map((time) => (
-                            <FilmScheduleDateTimesCell
-                                key={time.time}
-                                time={time.time}
-                                isActive={time.id ===  activeTime.id}
-                                onClick={() => handleDateTimeClick(time)}
-                            />
-                        ))}
-                    </div>
-                </div>
+  return (
+    <div className="w-xs">
+      {activeSeances.map((hall) => (
+        <div className="flex flex-col gap-3" key={hall.hallName}>
+          <h3 className="mx-1 text-gray-600">{translateHallName(hall.hallName)}</h3>
+          <div className="flex flex-row gap-1">
+            {hall.times.map((time) => (
+              <FilmScheduleDateTimesCell
+                key={time.time}
+                time={time.time}
+                isActive={time.id === activeTime?.id}
+                onClick={() => handleDateTimeClick(time)}
+              />
             ))}
-            <Button isActive={activeTime.id} onClick={handleButtonClick}>Продолжить</Button>
+          </div>
         </div>
-    );
+      ))}
+      <Button isActive={activeTime?.id} onClick={handleButtonClick}>Продолжить</Button>
+    </div>
+  );
 };

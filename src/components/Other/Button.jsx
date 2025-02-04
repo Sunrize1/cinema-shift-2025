@@ -1,8 +1,9 @@
 import React from "react";
 
-export const Button = ({ children, onClick, isActive = true, isPrimary = true, className = "" }) => {
+export const Button = ({ children, onClick, isActive = true, isPrimary = true, type = 'button', className = "" }) => {
     return (
         <button
+            type={type}
             onClick={isActive ? onClick : undefined}
             disabled={!isActive}
             className={`mt-4 w-full py-2 rounded-lg text-center font-semibold transition duration-200 
